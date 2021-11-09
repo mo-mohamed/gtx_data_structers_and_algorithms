@@ -62,9 +62,8 @@ public class SinglyLinkedList<T> {
         {
             this.tail.setNext(newNode);
             this.tail = newNode;
+            this.size++;
         }
-        this.size++;
-
     }
 
     /**
@@ -77,7 +76,15 @@ public class SinglyLinkedList<T> {
      */
     public T removeFromFront() {
         // WRITE YOUR CODE HERE (DO NOT MODIFY METHOD HEADER)!
-        return this.head.getData();
+        if (this.size == 0) throw new NoSuchElementException();
+        T data = this.head.getData();
+        if (this.size == 1)
+            this.head = this.tail = null;
+        else
+            this.head = this.head.getNext();
+
+        this.size--;
+        return data;
     }
 
     /**
@@ -90,7 +97,28 @@ public class SinglyLinkedList<T> {
      */
     public T removeFromBack() {
         // WRITE YOUR CODE HERE (DO NOT MODIFY METHOD HEADER)!
-        return this.head.getData();
+        if (this.size == 0) throw new NoSuchElementException();
+        
+        if (this.size == 1)
+        {
+            SinglyLinkedListNode<T> toRemove = this.tail;
+            this.tail = this.head = null;
+            this.size--;
+            return toRemove.getData();
+        }
+        else
+        {
+            SinglyLinkedListNode<T> previousToLast  = this.head;
+            while (previousToLast.getNext().getNext() != null)
+            {
+                previousToLast = previousToLast.getNext();
+            }
+            SinglyLinkedListNode<T> toRemove = previousToLast.getNext();
+            this.tail = previousToLast;
+            this.tail.setNext(null);
+            this.size--;
+            return toRemove.getData();
+        }
     }
 
     /**
